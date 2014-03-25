@@ -1,0 +1,40 @@
+The muhstik FAQ
+---------------
+
+Q: I have no clone online !
+A: In a first time, uncomment only one type of connection (gate/socks/proxy...)
+   because if on one the server quota is upper than the host list length,
+   muhstik will loop until it fulls the server and it will never pass to
+   another type of connection.
+
+   Then check the debug mode is enabled and bg is disabled in the init file.
+
+   For each clone, you should see in order :
+        1) <type> launched ...
+        2) <type> connect()ed nick= ...
+        3) clone available nick =...
+
+   If you don't see any of this messages, check the format of your server
+   list. If you only see the first, check the format of your
+   gate/socks/proxy/vhost list. If it is ok, that is that they are down or
+   don't allow anonymous connections, so scan for others.
+   If you only see the 1 and the 2, this is a restriction of the IRC server.
+   Try other servers and IRC networks.
+
+Q: I can't DCC Chat any clone !
+A: By sending a DCC Chat request to a clone, you start a server on an IP
+   choosen by your IRC client and send the IP and the port to muhstik. Then it
+   has only to connect() on your server. Perhaps it fails because you are
+   behind a proxy, or using AOL.
+
+Q: I am using vhosts and the ident of my clones is the same for all so they are
+   killed. Please make it change !
+A: Muhstik can't change your ident if it is not prefixed by a ~. In this case,
+   an ident daemon (identd) is running on your box and authenticates your IRC
+   connections. If you are root, you can disable the identd but many servers
+   require an ident running to connect you to IRC. So try to configure the
+   daemon to change the ident at each connection.
+
+Q: Each time I launch muhstik, I get "You must supply a way of connection."
+   What does it mean ?
+A: This is widely explained in the text file named README (RTFM).

@@ -1,0 +1,83 @@
+2003-11-02 version 4.2.2
+
+	- src/clone.c: Fixed segmentation fault with Quakenet when
+	changing nicks too fast.
+
+2003-10-30 version 4.2.1
+
+	- src/control.c:
+	    The command select can now send a command to all the clones when
+	    using a '*' as the destination.
+	- src/clone.c:
+	    Fixed bug: the command mk did not kick voiced users.
+	- src/clone.c:
+	    Fixed bug with some servers: the clones did not change their
+	    nickname on error 431 (No nickname given).
+	- src/init.c, src/init.h, src/clone.c:
+	    Added the option wait_reco to specify a time to wait in seconds
+	    before reconnecting a clone when disconnected from IRC.
+	- src/*:
+	    Reindented all the code.
+
+2003-05-02 version 4.2.0
+
+	- Added support for bouncers (see the info page).
+	- Mode changes of the type +ooo +ooo have been changed into
+	+oooooo.
+	- Fixed bug with the command mute.
+
+2003-02-28 version 4.1.2
+
+	- IMPORTANT:
+	    read it, please.
+	- Makefile:
+	    the bsd rule is replaced with netbsd.
+	- script/{ctcp,msg,nicks}.sh:
+	    don't need bash anymore.
+
+2003-02-25 version 4.1.1
+
+	- doc/README.NetBSD:
+	    for NetBSD users.
+	- src/clone.c: parse_irc_mode:
+	    simplier, faster, better.
+	- src/load.c: randget:
+	    generates more lovely strings.
+
+2003-02-21 version 4.1.0
+
+	- Removed the bounce features to clean up the code
+	- Fixed bug with the /names list on mode changes
+
+2002-12-16 version 4.0.8
+
+	- Fixed bug with reconnections
+	- A new option to avoid using restricted connections
+	- Fixed bug in the link feature with aops
+
+2002-12-07 version 4.0.5
+
+	- Refused clones because of an invalid username are saved as good
+	- Fixed bug when using IPv6 + commands by /msg
+	- A new option to configure the ident length
+	- Improved stability
+
+2002-11-18 version 4.0.4
+	
+	- The chankey and the /names list were not reseted on part
+
+2002-11-17 version 4.0.2
+	
+	- The proxy loading was broken
+	- Fixed bug in the command select
+	- Clones massdeop only in aggressive mode (command agg)
+	- Fixed bug in the pattern matching
+
+2002-11-16 version 4.0.0
+	
+	- The code has been structured into modules
+	- Only 2 threads (the loader works in background)
+	- No more bash loaded from muhstik. There is a new way to
+	script muhstik using the botnet (see /script)
+	- Clones don't only deop peaple oping or beeing oped. Muhstik
+	stores the /names list of each channel

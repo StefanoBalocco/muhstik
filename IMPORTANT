@@ -1,0 +1,15 @@
+
+    muhstik's mechanism to do MODEs and KICKs is terrible.
+  It doesn't track any list of nicks to op, or nicks to kick,
+  but it tries to change with simple MODE +o and KICK.
+
+    We are just weary of coding something which has a better
+  alternative (http://www.sirklabs.hu/ana/), so..  If you
+  would like to recode this part of muhstik (with penalty
+  handling), and get more experience, you are welcome.
+
+    muhstik needs your help!  Thanks.
+
+
+Mon Feb 17 21:58:37 CET 2003
+

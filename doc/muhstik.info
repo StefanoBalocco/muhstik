@@ -1,0 +1,544 @@
+This is muhstik.info, produced by makeinfo version 4.6 from
+muhstik.texinfo.
+
+   This file documents the version 4.2.1 of muhstik.  Copyright 2003
+Louis Bavoil
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided also
+that the sections entitled "Copying" and "GNU General Public License"
+are included exactly as in the original, and provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that this permission notice may be stated in a
+translation approved by the Free Software Foundation.
+
+
+File: muhstik.info,  Node: Top,  Next: Copying,  Up: (dir)
+
+.--.--.--.--|  |--.-----|  |_|__|-----.
+|     |  |  |     |_   -|   _|  |     /
+|__|__|_____|__|__|_____|____|__|__|__\
+
+   Muhstik is a powerful bot for IRC. It can connect proxys by anonymous
+proxys. Once online, they coordinate their actions to be the more
+efficient.
+
+   This is Edition 1.6 of the muhstik manual, updated October 30, 2003.
+
+* Menu:
+
+* Copying::             Your rights
+* Introduction::        What is muhstik ?
+* Compiling::           With or without IPV6
+* Configuring::         Editing files
+* Controlling::         Built-in commands
+* Background mode::     Two methods
+* Linking bots::        How to make a botnet
+* Mailing list::        How to get help
+
+ --- The Detailed Node Listing ---
+
+Configuring muhstik
+
+* Proxy files::         Creating proxy files
+* Server files::        Creating server files
+* The config file::     Editing the config file
+
+Controlling your clones
+
+* Identifying::         By IRC or by DCC
+* Built-in commands::   Info, actions, modes, environment
+* Scripting::           Define your own commands
+
+
+File: muhstik.info,  Node: Copying,  Next: Introduction,  Prev: Top,  Up: Top
+
+Copying
+*******
+
+Muhstik is "free software"; this means that everyone is free to use it
+and free to redistribute it on certain conditions.
+
+   Muhstik is not in the public domain; it is copyrighted and there are
+restrictions on its distribution, but these restrictions are designed to
+permit everything that a good cooperating citizen would want to do.
+What is not allowed is to try to prevent others from further sharing any
+version of muhstik that they might get from you.
+
+   The precise conditions are found in the GNU General Public License
+that comes with muhstik.
+
+
+File: muhstik.info,  Node: Introduction,  Next: Compiling,  Prev: Copying,  Up: Top
+
+Introduction
+************
+
+Today IRC servers prevent you from flooding, that is to say send more
+than 1 message per second. Supposing you are trying to bypass this
+limit; you must use more than one identity on your IRC server. But there
+is a quota by IP on global connection, which stops you unless if you can
+spoof, starting a connection with an IP different from yours.
+
+   And that's the first use of muhstik : bounce to IRC servers from open
+proxies, as you can do in mIRC for example with the option "Use
+Firewall".  Clones are launched into the background and distributed on
+different servers.
+
+   There are 3 types of proxies: HTTP Proxies, SOCKS, and telnet
+gateways (such as Wingates). Each type has a launcher associated, which
+uses a list of servers and a list of proxies. You can use different
+types in the same session, and even direct connections to the server.
+
+   When a muhstik clone succeed to connect to an IRC server, it becomes
+autonomous, like a bot. For example if it looses its connection, it can
+try to reconnect if it is the first time it has been thrown out.
+
+   Here comes the most interesting part of muhstik: its spirit of
+contradiction. All clones analyse the IRC operations they can see and if
+they are op, they will deop or kick any enemy operator in action, and op
+any friend on join or deop. The difficult point is to know at any time
+who is a friend and who is not. For that, the nicknames of the online
+clones are stored in their memory, in addition to a list of protected
+nicks.
+
+
+File: muhstik.info,  Node: Compiling,  Next: Configuring,  Prev: Introduction,  Up: Top
+
+Compiling
+*********
+
+Using make
+==========
+
+  1. GNU/Linux:  make linux
+
+  2. Solaris:    make sun
+
+  3. NetBSD:     make netbsd
+
+  4. MacOS X:    make mac
+
+  5. Cygwin:     make cygwin
+
+  6. Amiga:      make amiga
+
+Enabling IPV6
+=============
+
+To enable IPV6, edit the Makefile to compile with the additional flag
+-DUSE_IPV6.
+
+
+File: muhstik.info,  Node: Configuring,  Next: Proxy files,  Prev: Compiling,  Up: Top
+
+Configuring muhstik
+*******************
+
+Muhstik loads proxys on servers. You prepare a list of proxys and a list
+of servers and you put the names of the lists in the config file.
+
+* Menu:
+
+* Proxy files::         Creating proxy files
+* Server files::        Creating server files
+* The config file::     Editing the config file
+
+
+File: muhstik.info,  Node: Proxy files,  Next: Server files,  Prev: Configuring,  Up: Configuring
+
+Creating proxy files
+********************
+
+In this version of muhstik, you can use: WINGATES, SOCKS 4 or 5,
+PROXYS, ROUTERS and VHOSTS.
+
+The first thing to do is to prepare an entry list for each type of gate
+you want to use. The file formats are:
+
+   * VHOSTS:
+     host1
+     host2
+
+   * WINGATES, SOCKS or ROUTERS:
+     host1 or host1:port1
+     host2 or host2:port2
+
+   * PROXYS:
+     host1:port1
+     host2:port2
+     e.g.: 195.243.345.23:80
+
+   * BOUNCERS:
+     host1:port1 [password1 [username1]]
+     host2:port2 [password2 [username2]]
+
+NOTE :
+You can easily set comments like this:
+127.0.0.1 #local server
+
+
+File: muhstik.info,  Node: Server files,  Next: The config file,  Prev: Proxy files,  Up: Configuring
+
+Creating server files
+*********************
+
+For each type of proxy, you need to have a server list.  For example,
+you must have 3 server files if you use in the same time gates, socks
+and proxies.
+
+Edit text files with server names (hostnames or/and IP addresses),
+ports and the max number of clones to load on each one :
+
+     server1:port1 max1
+     server2:port2 max2
+     e.g.: my.server.net:6667 10
+
+NOTE:
+If you set a server max to 0, you disable quota on this server.
+
+   If you want to connect to a server with a password and ident, for
+example to connect to a BNC, use :
+
+     server:port max password ident
+
+NOTE:
+The ident can be omited.
+
+
+File: muhstik.info,  Node: The config file,  Next: Controlling,  Prev: Server files,  Up: Configuring
+
+Editing the main config file
+****************************
+
+Edit the muhstik.conf file and customize it.
+
+   To get a valid config file from the default one, you only need to
+setup the connection settings. There are always default values for the
+others.
+
+You can use different types of connection in a same session, like that :
+     proxy_list proxylist
+     proxy_server_list servers
+     direct_server_list local
+
+   It would load the HTTP Proxys of the file proxylist on the servers of
+the file servers. Then it would connect other clones without spoof with
+the servers and quotas of the file local.
+
+You can use many couples proxy/server with the same type, like that :
+     proxy_list proxy.us
+     proxy_server_list servers.us
+     proxy_save good.us
+     proxy_list proxy.de
+     proxy_server_list servers.de
+     proxy_save good.de
+
+You are now ready to run muhstik !
+To start it, type: ./muhstik <config file>
+
+
+File: muhstik.info,  Node: Controlling,  Next: Identifying,  Prev: The config file,  Up: Top
+
+Controlling your clones
+***********************
+
+Muhstik is not an IRC client. It is a bot. And like most of the bots, it
+can be controlled from the console or through a DCC Chat session on one
+of your clones.
+
+* Menu:
+
+* Identifying::
+* Built-in commands::
+* Scripting::
+
+
+File: muhstik.info,  Node: Identifying,  Next: Built-in commands,  Prev: Controlling,  Up: Controlling
+
+Identifying
+===========
+
+In a channel
+------------
+
+The only command muhstik recognizes in a channel is !op. It will set you
+op if you are in the the auto op list.
+See the commands +aop and -aop below.
+
+By /msg or /notice
+------------------
+
+Since the version 3.9, it also accepts commands given by /notice or /msg
+from aops. To identify yourself by /notice or /msg, just send "identify
+<dcc_pass>" to a clone and you will be recognized as an op.
+
+By DCC
+------
+
+Just make a DCC on a clone; it will ask for the password you have set
+in the config file.  If you enter the good pass, it adds you to the aop
+list and to the list of protected nicks.
+
+
+File: muhstik.info,  Node: Built-in commands,  Next: Scripting,  Prev: Identifying,  Up: Controlling
+
+Built-in commands
+=================
+
+  1. Info
+
+     help or ?
+     Prints the available commands with short descriptions
+
+     stat
+     Prints status (uptime, nicks, channels, jobs, users, shit list,
+     links...)
+
+  2. Basic actions
+
+     join <channel> [<delay>] [<key>]
+     Joins or rejoins the channel you specify
+     Delay is an average time in seconds to use between two joins.
+
+     part <channel> [:<reason>]
+     Parts the channel you specify
+
+     quit [:<reason>]
+     Shut down muhstik
+
+     privmsg <nick or chan> :<message>
+     To send a message
+
+     mode <channel> <parms>
+     IRC protocol
+
+     kick <channel> <nick> [:<reason>]
+     IRC protocol
+
+     topic <channel> :<topic>
+     IRC protocol
+
+  3. Advanced actions
+
+     nicks
+     Change all clone nicks
+
+     kb <chan> <nick>
+     To kickban <nick> from <chan>
+
+     mo <chan>
+     To make the clones reop themselve on the chan
+
+     md <chan>
+     To deop all enemy ops on the chan
+
+     mk <chan>
+     To kick all enemies on the chan
+
+     mkb <chan>
+     To kickban all enemies on the chan
+
+     mu <chan>
+     Mass unban
+
+     echo <nick>
+     Echo nick's words
+     To stop, type echo.
+
+     to <chan> <server1> <server2>
+     collide nicks on netsplit
+     server1 = server to get op nicks
+     server2 = server to change nicks
+     If the chan is +s, it will only work if your clones are on.
+
+     select <nick> :<IRC command>
+     make only the selected clone send a raw command to IRC
+
+     select * :<IRC command>
+     send a raw command to all the online clones
+
+  4. Modes
+
+     agg
+     Switch the aggressive mode on/off
+     In this mode, muhstik deops enemys actively and kicks them on
+     privmsg.
+
+     peace
+     Switch the peace mode on/off
+     In this mode, muhstik never deops enemies by revenge.
+
+     random
+     Switch between random nick and wordlist modes
+
+     broadcast
+     Switch the broadcast mode in the command echo
+     If this mode is ON, echo broadcasts to all the active channels.
+
+     mute
+     Stop writting to stdout
+
+  5. Environment
+
+     chankey <chan> <key>
+     Useful when the channel to join is set +k (key)
+
+     chankey <chan>
+     Disables chankey
+
+     nicklist <filename>
+     Use filename as a wordlist
+
+     passwd <new pass>
+     To change the DCC password
+
+     +prot <nick>
+     -prot <ID>
+     Manage the list of protected nicks
+     Protection features reop and revenge
+
+     +aop <pattern>
+     -aop <ID>
+     Manage the auto op list
+     If your nick!ident@host matches an entry of this list, a clone will
+     op you when you join a channel or when you send !op to a channel,
+     and you will be recognized as a protected nick.
+
+     For example, *!*@127.0* is a pattern that matches all users, whose
+     IPs are unresolvable and begin with 127.0.
+
+     +shit <pattern> [reason]
+     -shit <ID>
+     Manage the shit list
+     On join, a clone will kickban all nick!ident@host matching the
+     pattern.
+
+     NOTE:
+     If you use -prot, -aop or -shit with -1, muhstik clears the
+     associated list. For example, `-prot -1' makes the protected nick
+     list empty.
+
+     load <type> <proxy> <port> <server> <port>
+     load a clone dynamically
+
+     +scan <type> <scan port> <server> <port> <filename> [<mode>]
+     -scan <ID>
+     Set/unset a scan on join
+     First, a clone is choosed to get the hosts from join messages. This
+     clone looks if the host taken from IRC is in the file filename. If
+     it is not, it loads a clone with the host and specified scan port
+     and server:port. If the new clone connects successfully, it puts
+     its hostname to the file and quits IRC.
+
+     Available types :
+     0: WINGATE
+     1: SOCKS4
+     2: SOCKS5
+     3: PROXY
+     4: VHOST
+     5: CISCO
+     6: CAYMAN
+     7: NOSPOOF
+
+     Available modes :
+     0: scan only
+     1: don't join any channel on connection
+     2: join active channels on connection
+
+
+
+File: muhstik.info,  Node: Scripting,  Next: Background mode,  Prev: Built-in commands,  Up: Controlling
+
+Scripting
+=========
+
+You can script muhstik using the botnet. See /script for examples.
+
+
+File: muhstik.info,  Node: Background mode,  Next: Linking bots,  Prev: Scripting,  Up: Top
+
+Launching muhstik in background
+*******************************
+
+  1. First way
+
+     In the config file, use the option bg to fork() into the
+     background.
+
+  2. Second way
+
+     If you want to send your clones to the background after commanding
+     them from the console, use this method:
+
+     Sending muhstik to the background:
+     a) Type mute in the console,
+     b) hit CTRL-Z,
+     c) type bg
+
+
+
+File: muhstik.info,  Node: Linking bots,  Next: Mailing list,  Prev: Background mode,  Up: Top
+
+Linking bots
+************
+
+When the clones are linked, they are quite like launched from an unique
+muhstik. So for example, when you enter a command on one, they execute
+it all.
+
+First you need to set a secure password on every box you want to link
+with the option 'link_pass'.
+
+Then muhstik will start by loading a link server on the port 7777.
+You can change this port with the option 'link_port'.
+
+To add a muhstik to your muhstik network, configure the 'link_host'
+line in its config file by giving the host and port of a muhstik server,
+that is to say any muhstik with the 'link_pass' set.
+
+If you have a file that is shared between your different shells, you can
+use it to syncronize your clones when they reply to an event. For that,
+use the option 'link_file' of the config file.
+
+
+File: muhstik.info,  Node: Mailing list,  Prev: Linking bots,  Up: Top
+
+Mailing list
+************
+
+Want to receive important emails about updates, bugs, etc ?
+Subscribe to the muhstik mailing list below.
+<http://lists.sourceforge.net/lists/listinfo/muhstik-users>
+
+Or visit:
+<http://muhstik.sourceforge.net>
+
+
+
+Tag Table:
+Node: Top964
+Node: Copying2076
+Node: Introduction2729
+Node: Compiling4334
+Node: Configuring4753
+Node: Proxy files5173
+Node: Server files5891
+Node: The config file6647
+Node: Controlling7671
+Node: Identifying8040
+Node: Built-in commands8793
+Node: Scripting12810
+Node: Background mode13007
+Node: Linking bots13510
+Node: Mailing list14397
+
+End Tag Table

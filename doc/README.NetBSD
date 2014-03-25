@@ -1,0 +1,16 @@
+
+  Comments for NetBSD users
+  =========================
+
+  muhstik's Makefile requires GNU Make, which is not part of NetBSD.
+  You have to install it if you don't have gmake - from pkgsrc, or
+  from a precompiled package (devel/gmake).
+
+  After gmake muhstik needs pthread too, that is available in pkgsrc
+  also (devel/pth).
+
+  If you have any problem with the NetBSD port, contact roadr.
+
+
+Mon Feb 17 20:52:01 CET 2003
+
